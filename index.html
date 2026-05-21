@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Expense Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="container">
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Expense Tracker</h2>
+
+    <ul>
+      <li>Dashboard</li>
+      <li id="expensePageBtn">Expenses</li>
+      <li id="petrolPageBtn">Petrol</li>
+      <li id="studentPageBtn">Student Fee</li>
+    </ul>
+
+    <div class="summaryBox">
+      <h4 id="heading">This Month</h4>
+      <p id="totalExpensesPara">Total Expenses: Rs. 0</p>
+      <p id="petroCostpara">Petrol Cost: Rs. 0</p>
+      <p id="entriesPara">Entries: 0</p>
+    </div>
+  </div>
+
+  <!-- Main -->
+  <div class="main">
+
+    <h1>Dashboard</h1>
+
+    <!-- Cards -->
+    <div class="cards">
+      <div class="card green" id="greenCard">Total Expenses <br> Rs. 0</div>
+      <div class="card orange" id="totalPetrol">Petrol Cost <br> Rs. 0</div>
+      <div class="card blue" id="totalEntries">Entries <br> 0</div>
+      <div class="card purple" id="spent">Total Spent <br> Rs. 0</div>
+    </div>
+
+    <!-- Expenses Section -->
+    <div id="expenseSection" class="section">
+      <h2>Expenses</h2>
+
+      <div class="form">
+        <input placeholder="enter total amount you have" id="initialExpense">
+        <input placeholder="Expense Name" id="expName">
+        <input type="number" placeholder="Amount" id="expAmount">
+        <input type="date" id="expDate">
+        <button id="addExp">Add Expense</button>
+         
+      </div>
+
+      <table>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+        <tbody id="expenseTable"></tbody>
+      </table>
+    </div>
+
+    <!-- Petrol Section -->
+    <div id="petrolSection" class="section" style="display:none;">
+      <h2>Petrol / Maintenance</h2>
+
+      <div class="form">
+        <input placeholder="Owner Name"   id="ownerName">
+        <input type="number" placeholder="Cost"  id="cost">
+        <input type="date" id="date">
+        <input placeholder="Destination"  id="destination">
+        <button  id="petrolEnteryButton">Add Entry</button>
+      </div>
+
+      <table>
+        <tr>
+          <th>#</th>
+          <th>Owner</th>
+          <th>Cost</th>
+          <th>Destination</th>
+          <th>Date</th>
+          <th>Action</th>
+        </tr>
+        <tbody id="petrolBody"></tbody>
+      </table>
+    </div>
+    <!-- students fee section -->
+     <div id="studentSection" class="section" style="display:none;">
+  <h2>Student Fee</h2>
+
+  <div class="form">
+    <input placeholder="Student Name" id="studentName">
+    <input type="number" placeholder="Fee" id="studentFee">
+    <input type="date" id="studentDate">
+    <button id="addStudentBtn" type="button">Add Fee</button>
+  </div>
+
+  <table>
+    <tr>
+      <th>#</th>
+      <th>Name</th>
+      <th>Fee</th>
+      <th>Date</th>
+      <th>Action</th>
+    </tr>
+    <tbody id="studentBody"></tbody>
+  </table>
+</div>
+
+  </div>
+</div>
+<script src="script.js"></script>
+
+</body>
+</html>
