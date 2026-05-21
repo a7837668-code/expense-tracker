@@ -32,12 +32,12 @@ const entriesPara = document.querySelector("#entriesPara");
 
 const expenseTable = document.querySelector("#expenseTable");
 const petrolBody = document.querySelector("#petrolBody");
+const studentBody = document.querySelector("#studentBody");
 
 const studentName = document.querySelector("#studentName");
 const studentFee = document.querySelector("#studentFee");
 const studentDate = document.querySelector("#studentDate");
 const addStudentBtn = document.querySelector("#addStudentBtn");
-const studentBody = document.querySelector("#studentBody");
 
 // ======================= CLASSES =======================
 
@@ -66,7 +66,7 @@ class Student {
   }
 }
 
-// ======================= MAIN APP CLASS =======================
+// ======================= MAIN CLASS =======================
 
 class ExpenseTracker {
   constructor() {
@@ -77,11 +77,18 @@ class ExpenseTracker {
     this.loadData();
   }
 
-  // ================= EXPENSE METHODS =================
+  // ================= PAGE SWITCH  =================
+  showSection(section) {
+    expenseSection.style.display = "none";
+    petrolSection.style.display = "none";
+    studentSection.style.display = "none";
 
+    section.style.display = "block";
+  }
+
+  // ================= EXPENSE =================
   addExpense(expense) {
     this.expenses.push(expense);
-
     this.renderExpenses();
     this.updateCards();
     this.saveData();
@@ -91,86 +98,70 @@ class ExpenseTracker {
     expenseTable.innerHTML = "";
 
     this.expenses.forEach((item, index) => {
-      let row = document.createElement("tr");
-
-      row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${item.name}</td>
-                <td>${item.amount}</td>
-                <td>${item.date}</td>
-                <td>
-                    <button onclick="tracker.deleteExpense(${index})">
-                        Delete
-                    </button>
-                </td>
-            `;
-
-      expenseTable.appendChild(row);
+      expenseTable.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name}</td>
+          <td>${item.amount}</td>
+          <td>${item.date}</td>
+          <td>
+            <button onclick="tracker.deleteExpense(${index})">Delete</button>
+          </td>
+        </tr>
+      `;
     });
   }
 
   deleteExpense(index) {
     this.expenses.splice(index, 1);
-
     this.renderExpenses();
     this.updateCards();
     this.saveData();
   }
 
-  // ================= PETROL METHODS =================
-
+  // ================= PETROL =================
   addPetrol(petrolObj) {
     this.petrol.push(petrolObj);
-
     this.renderPetrol();
     this.updateCards();
     this.saveData();
   }
 
   renderPetrol() {
-    petrolbody.innerHTML = "";
+    petrolBody.innerHTML = "";
 
     let total = 0;
 
     this.petrol.forEach((item, index) => {
-      let row = document.createElement("tr");
-
-      row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${item.name}</td>
-                <td>${item.cost}</td>
-                <td>${item.destination}</td>
-                <td>${item.date}</td>
-                <td>
-                    <button onclick="tracker.deletePetrol(${index})">
-                        Delete
-                    </button>
-                </td>
-            `;
-
-      petrolbody.appendChild(row);
+      petrolBody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name}</td>
+          <td>${item.cost}</td>
+          <td>${item.destination}</td>
+          <td>${item.date}</td>
+          <td>
+            <button onclick="tracker.deletePetrol(${index})">Delete</button>
+          </td>
+        </tr>
+      `;
 
       total += Number(item.cost);
     });
 
-    totalPetrol.innerHTML = `
-            Petrol Cost <br> Rs ${total}
-        `;
+    totalPetrol.innerHTML = `Petrol Cost <br> Rs ${total}`;
   }
 
   deletePetrol(index) {
     this.petrol.splice(index, 1);
-
     this.renderPetrol();
     this.updateCards();
     this.saveData();
   }
 
-  // ================= STUDENT METHODS =================
-
+  // ================= STUDENT =================
   addStudent(student) {
     this.students.push(student);
-
     this.renderStudents();
     this.updateCards();
     this.saveData();
@@ -180,104 +171,65 @@ class ExpenseTracker {
     studentBody.innerHTML = "";
 
     this.students.forEach((item, index) => {
-      let row = document.createElement("tr");
-
-      row.innerHTML = `
-                <td>${index + 1}</td>
-                <td>${item.name}</td>
-                <td>${item.fee}</td>
-                <td>${item.date}</td>
-                <td>
-                    <button onclick="tracker.deleteStudent(${index})">
-                        Delete
-                    </button>
-                </td>
-            `;
-
-      studentBody.appendChild(row);
+      studentBody.innerHTML += `
+        <tr>
+          <td>${index + 1}</td>
+          <td>${item.name}</td>
+          <td>${item.fee}</td>
+          <td>${item.date}</td>
+          <td>
+            <button onclick="tracker.deleteStudent(${index})">Delete</button>
+          </td>
+        </tr>
+      `;
     });
   }
 
   deleteStudent(index) {
     this.students.splice(index, 1);
-
     this.renderStudents();
     this.updateCards();
     this.saveData();
   }
 
-  // ================= UPDATE CARDS =================
-
+  // ================= DASHBOARD  =================
   updateCards() {
     let expenseTotal = 0;
     let petrolTotal = 0;
 
-    this.expenses.forEach((item) => {
-      expenseTotal += Number(item.amount);
-    });
-
-    this.petrol.forEach((item) => {
-      petrolTotal += Number(item.cost);
-    });
+    this.expenses.forEach((i) => (expenseTotal += Number(i.amount)));
+    this.petrol.forEach((i) => (petrolTotal += Number(i.cost)));
 
     let totalSpent = expenseTotal + petrolTotal;
-
     let totalEntries =
       this.expenses.length + this.petrol.length + this.students.length;
 
-    spentAmountCard.innerHTML = `
-            Total Spent <br> Rs ${totalSpent}
-        `;
+    spentAmountCard.innerHTML = `Total Spent <br> Rs ${totalSpent}`;
 
-    totalExpensesPara.innerHTML = `
-            Total Expenses: Rs ${initialAmount.value}
-        `;
+    totalExpensesPara.innerHTML = `Total Expenses: Rs ${expenseTotal}`;
+    petroCostpara.innerHTML = `Petrol Cost: Rs ${petrolTotal}`;
+    entriesPara.innerHTML = `Entries: ${totalEntries}`;
 
-    petroCostpara.innerHTML = `
-            Petrol Cost: Rs ${petrolTotal}
-        `;
+    totalEntriesCard.innerHTML = `Total Entries <br> ${totalEntries}`;
 
-    entriesPara.innerHTML = `
-            Entries: ${totalEntries}
-        `;
-
-    totalEntriesCard.innerHTML = `
-            Total Entries <br> ${totalEntries}
-        `;
-
-    totalCard.innerHTML = `
-            Total Expenses <br> Rs ${initialAmount.value}
-        `;
+    totalCard.innerHTML = `Total Budget <br> Rs ${initialAmount.value || 0}`;
   }
 
   // ================= LOCAL STORAGE =================
-
   saveData() {
     localStorage.setItem("expenses", JSON.stringify(this.expenses));
-
     localStorage.setItem("petrol", JSON.stringify(this.petrol));
-
     localStorage.setItem("students", JSON.stringify(this.students));
-
     localStorage.setItem("initialAmount", initialAmount.value);
   }
 
   loadData() {
-    const savedExpenses = JSON.parse(localStorage.getItem("expenses")) || [];
+    this.expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+    this.petrol = JSON.parse(localStorage.getItem("petrol")) || [];
+    this.students = JSON.parse(localStorage.getItem("students")) || [];
 
-    const savedPetrol = JSON.parse(localStorage.getItem("petrol")) || [];
-
-    const savedStudents = JSON.parse(localStorage.getItem("students")) || [];
-
-    const savedInitialAmount = localStorage.getItem("initialAmount");
-
-    this.expenses = savedExpenses;
-    this.petrol = savedPetrol;
-    this.students = savedStudents;
-
-    if (savedInitialAmount) {
-      initialAmount.value = savedInitialAmount;
-    }
+    const savedInitial = localStorage.getItem("initialAmount");
+    if (savedInitial) initialAmount.value = savedInitial;
 
     this.renderExpenses();
     this.renderPetrol();
@@ -286,38 +238,26 @@ class ExpenseTracker {
   }
 }
 
-// ======================= OBJECT =======================
-
+// ================= OBJECT =================
 const tracker = new ExpenseTracker();
 
-// ======================= EVENT LISTENERS =======================
-
-// expense section show
-
+// ================= PAGE SWITCHING  =================
 expenseButtons.addEventListener("click", () => {
-  petrolSection.style.display = "none";
-  studentSection.style.display = "none";
-  expenseSection.style.display = "block";
+  tracker.showSection(expenseSection);
 });
-
-// petrol section show
 
 petrolButton.addEventListener("click", () => {
-  expenseSection.style.display = "none";
-  studentSection.style.display = "none";
-  petrolSection.style.display = "block";
+  tracker.showSection(petrolSection);
 });
-
-// student section show
 
 studentPageBtn.addEventListener("click", () => {
-  expenseSection.style.display = "none";
-  petrolSection.style.display = "none";
-  studentSection.style.display = "block";
+  tracker.showSection(studentSection);
 });
 
-// add expense
+// default page
+tracker.showSection(expenseSection);
 
+// ================= ADD EXPENSE =================
 expenseButton.addEventListener("click", () => {
   const expense = new Expense(
     expenseName.value,
@@ -332,8 +272,7 @@ expenseButton.addEventListener("click", () => {
   expenseDate.value = "";
 });
 
-// add petrol
-
+// ================= ADD PETROL =================
 addPetrol.addEventListener("click", () => {
   const petrol = new Petrol(
     ownerName.value,
@@ -350,11 +289,8 @@ addPetrol.addEventListener("click", () => {
   petrolDate.value = "";
 });
 
-// add student
-
-addStudentBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-
+// ================= ADD STUDENT =================
+addStudentBtn.addEventListener("click", () => {
   const student = new Student(
     studentName.value,
     studentFee.value,
@@ -368,8 +304,7 @@ addStudentBtn.addEventListener("click", (e) => {
   studentDate.value = "";
 });
 
-// initial amount save
-
+// ================= INITIAL INPUT =================
 initialAmount.addEventListener("input", () => {
   tracker.updateCards();
   tracker.saveData();
